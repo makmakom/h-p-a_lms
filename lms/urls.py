@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path
 
 from students.views import hello, get_students
+from teachers.views import get_teachers
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/', hello),
-    path('get_students/', get_students),
+    path('students/', get_students),
+    path('teachers/', get_teachers),
 ]
