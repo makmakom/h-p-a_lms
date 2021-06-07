@@ -1,4 +1,5 @@
 import datetime
+from faker import Faker
 
 from django.db import models
 
@@ -14,7 +15,21 @@ class Student(models.Model):
     birthday = models.DateField(default=datetime.date.today, null=True)
 
     def __str__(self):
-        return f'{self.full_name()}, {self.birthday}'
+        return f'{self.full_name()}, {self.birthday}, {self.id}'
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+    @staticmethod
+    def generate_students(count):
+        faker = Faker()
+        for _ in range(count):
+            st = Student(
+                first_name=faker.first_name(),
+                last_name=faker.last_name(),
+                email=faker.email(),
+                birthday=faker.date_between(start_date='-65y', end_date='-18y')
+            )
+            st.save()
+
+
