@@ -7,13 +7,10 @@ class Command(BaseCommand):
     help = "Generate random students."
 
     def add_arguments(self, parser):
-        parser.add_argument('count', nargs='+')
+        parser.add_argument('count', nargs='+', type=int)
 
     def handle(self, *args, **options):
         print(options['count'])
-
-        # if options['count']:
-        #     Student.generate_students(int(options['count']))
-        #     print('Ok')
-
-        # raise NotImplementedError()
+        for count in options['count']:
+            Student.generate_students(count)
+            self.stdout.write(self.style.SUCCESS(f'{count} students were successfully created'))

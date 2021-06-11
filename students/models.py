@@ -31,5 +31,3 @@ class Student(models.Model):
                 birthday=faker.date_between(start_date='-65y', end_date='-18y')
             )
             st.save()
-
-
