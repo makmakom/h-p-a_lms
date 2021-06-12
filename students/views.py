@@ -3,10 +3,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 from students.forms import StudentCreateForm
 from students.models import Student
-from django.shortcuts import render
+from django.shortcuts import render # noqa
 
-from webargs.djangoparser import use_args
 from webargs import fields
+from webargs.djangoparser import use_args
 
 
 # Create your views here.
@@ -41,13 +41,10 @@ def get_students(request, args):
     <form action="" method="get">
         <label for="fname">First name:</label>
         <input type="text" id="fname" name="first_name" ><br><br>
-        
         <label for="lname">Last name:</label>
         <input type="text" id="lname" name="last_name" ><br><br>
-        
         <label>Age:</label>
         <input type="number" name="age"><br><br>
-        
         <input type="submit" value="Submit">
     </form>
     """
