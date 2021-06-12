@@ -1,10 +1,8 @@
 import datetime
-from faker import Faker
 
 from django.db import models
 
-
-# Create your models here.
+from faker import Faker
 
 
 class Student(models.Model):
@@ -31,5 +29,3 @@ class Student(models.Model):
                 birthday=faker.date_between(start_date='-65y', end_date='-18y')
             )
             st.save()
-
-
