@@ -9,9 +9,6 @@ from webargs import fields
 from webargs.djangoparser import use_args
 
 
-# Create your views here.
-
-
 def hello(request):
     return HttpResponse('Hello!')
 
@@ -43,8 +40,8 @@ def get_students(request, args):
         <input type="text" id="fname" name="first_name" ><br><br>
         <label for="lname">Last name:</label>
         <input type="text" id="lname" name="last_name" ><br><br>
-        <label>Age:</label>
-        <input type="number" name="age"><br><br>
+        <label>Birthday:</label>
+        <input type="date" name="birthday"><br><br>
         <input type="submit" value="Submit">
     </form>
     """
