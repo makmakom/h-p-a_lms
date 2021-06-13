@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
-from students.forms import StudentCreateForm
+from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
 from django.shortcuts import render
 
@@ -48,7 +48,7 @@ def get_students(request, args):
         <label>Age:</label>
         <input type="number" name="age"><br><br>
         
-        <input type="submit" value="Submit">
+        <input type="submit" value="Search">
     </form>
     """
 
@@ -69,7 +69,33 @@ def create_student(request):
     html_form = f"""
     <form method="post">
       {form.as_p()}
-      <input type="submit" value="Submit">
+      <input type="submit" value="Create">
+    </form>
+    """
+
+    return HttpResponse(html_form)
+
+
+@csrf_exempt
+def update_student(request, id):
+    student = Student.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = StudentUpdateForm(
+            data=request.POST,
+            instance=student
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/students/')
+
+    form = StudentUpdateForm(instance=student)
+
+    html_form = f"""
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
     </form>
     """
 
@@ -79,4 +105,8 @@ def create_student(request):
 def format_records(lst):
     if len(lst) == 0:
         return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)
+    result = []
+    for elem in lst:
+        formatted = f'<a href="/students/update/{elem.id}">{elem.id}</a> {elem}'
+        result.append(formatted)
+    return '<br>'.join(result)
