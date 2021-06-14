@@ -140,14 +140,4 @@ if DEBUG:
     ]
     INTERNAL_IPS = [
         '127.0.0.1',
-        'localhost',
-        '::1'
     ]
-
-    # this is the main reason for not showing up the toolbar. NO...
-    import mimetypes
-    mimetypes.add_type("text/html", '.html')
-
-    DEBUG_TOOLBAR_CONFIG = {
-        'INTERCEPT_REDIRECTS': False,
-    }
