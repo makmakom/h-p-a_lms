@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from groups.views import create_group, get_groups
+
 from lms import settings
 
 from students.views import create_student, get_students, hello
@@ -29,6 +31,8 @@ urlpatterns = [
     path('students/create/', create_student),
     path('teachers/', get_teachers),
     path('teachers/create/', create_teacher),
+    path('groups/', get_groups),
+    path('groups/create/', create_group),
 ]
 
 if settings.DEBUG:
