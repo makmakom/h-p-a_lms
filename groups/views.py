@@ -32,6 +32,7 @@ def get_groups(request, args):
     records = format_records(groups)
 
     html_form = """
+    <body>
     <form action="" method="get">
         <label for="fname">Name:</label>
         <input type="text" id="fname" name="name" ><br><br>
@@ -43,6 +44,7 @@ def get_groups(request, args):
         <input type="text" name="lessons_passed"><br><br>
         <input type="submit" value="Submit">
     </form>
+    </body>
     """
 
     return HttpResponse(html_form + records)
@@ -60,10 +62,12 @@ def create_group(request):
     form = GroupCreateForm()
 
     html_form = f"""
+    <body>
     <form method="post">
       {form.as_p()}
       <input type="submit" value="Submit">
     </form>
+    </body>
     """
 
     return HttpResponse(html_form)
