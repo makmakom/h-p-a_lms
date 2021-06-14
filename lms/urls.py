@@ -14,7 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
+from lms import settings
 
 from students.views import create_student, get_students, hello
 
@@ -28,3 +30,9 @@ urlpatterns = [
     path('teachers/', get_teachers),
     path('teachers/create/', create_teacher),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]
