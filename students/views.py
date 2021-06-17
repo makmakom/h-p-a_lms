@@ -44,7 +44,6 @@ def get_students(request, args):
     )
 
 
-@csrf_exempt
 def create_student(request):
     if request.method == 'GET':
         form = StudentCreateForm()
@@ -65,7 +64,6 @@ def create_student(request):
     )
 
 
-@csrf_exempt
 def update_student(request, id):
     student = Student.objects.get(id=id)
 
