@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from students.forms import StudentCreateForm, StudentUpdateForm
@@ -53,7 +54,7 @@ def create_student(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/students/')
+            return HttpResponseRedirect(reverse('students:list'))
 
     return render(
         request=request,
@@ -78,7 +79,7 @@ def update_student(request, id):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/students/')
+            return HttpResponseRedirect(reverse('students:list'))
 
     return render(
         request=request,

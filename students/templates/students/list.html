@@ -19,6 +19,6 @@
 </form>
 <hr>
 {% for item in students %}
-    <a href="/students/update/{{item.id}}">{{item.id}}</a> {{item}}<br>
+    <a href="{% url 'students:update' item.id %}">{{item.id}}</a> {{item}}<br>
 {% endfor %}
 {% endblock %}
