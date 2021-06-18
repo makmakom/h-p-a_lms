@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render # noqa
+
+from core import utils # noqa
 
 from groups.forms import GroupCreateForm
 from groups.models import Group
-
-from django.shortcuts import render # noqa
 
 from webargs import fields
 from webargs.djangoparser import use_args
@@ -29,7 +30,7 @@ def get_groups(request, args):
         if param_value:
             groups = groups.filter(**{param_name: param_value})
 
-    records = format_records(groups)
+    records = utils.format_records(groups)
 
     html_form = """
     <body>
@@ -52,14 +53,14 @@ def get_groups(request, args):
 
 @csrf_exempt
 def create_group(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = GroupCreateForm()
+    elif request.method == 'POST':
         form = GroupCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/groups/')
-
-    form = GroupCreateForm()
 
     html_form = f"""
     <body>
@@ -71,9 +72,3 @@ def create_group(request):
     """
 
     return HttpResponse(html_form)
-
-
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)
