@@ -1,16 +1,15 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render # noqa
+
+from core import utils # noqa
 
 from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
-from django.shortcuts import render
 
-from webargs.djangoparser import use_args
 from webargs import fields
-
-
-# Create your views here.
+from webargs.djangoparser import use_args
 
 
 def hello(request):
@@ -48,7 +47,6 @@ def get_students(request, args):
 def create_student(request):
     if request.method == 'GET':
         form = StudentCreateForm()
-
     elif request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
@@ -70,7 +68,6 @@ def update_student(request, id):
 
     if request.method == 'GET':
         form = StudentUpdateForm(instance=student)
-
     elif request.method == 'POST':
         form = StudentUpdateForm(
             data=request.POST,
