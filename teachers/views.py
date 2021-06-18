@@ -4,10 +4,10 @@ from django.shortcuts import render  # noqa
 
 from core import utils  # noqa
 
-from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm
 from teachers.models import Teacher
 
-from webargs import fields
+from webargs import fields, validate
 from webargs.djangoparser import use_args
 
 
@@ -39,7 +39,7 @@ def get_teachers(request, args):
         else:
             teachers = teachers.filter(**{param_name: param_value})
 
-    records = format_records(teachers)
+    records = utils.format_records(teachers, 'teachers')
 
     html_form = """
         <body>
@@ -81,8 +81,29 @@ def create_teacher(request):
     return HttpResponse(html_form)
 
 
-# todo: need to move to Utils
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)
+@csrf_exempt
+def update_teacher(request, id_teacher):
+    group = Teacher.objects.get(id=id_teacher)
+
+    if request.method == 'GET':
+        form = TeacherUpdateForm(instance=group)
+    elif request.method == 'POST':
+        form = TeacherUpdateForm(
+            data=request.POST,
+            instance=group
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/teachers/')
+
+    html_form = f"""
+    <body>
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
+    </form>
+    </body>
+    """
+
+    return HttpResponse(html_form)

@@ -16,11 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from groups.views import create_group, get_groups, update_group
+
 from lms import settings
 
-from groups.views import create_group, get_groups
-from teachers.views import create_teacher, get_teachers
-from students.views import hello, get_students, create_student, update_student
+from students.views import create_student, get_students, hello, update_student
+
+from teachers.views import create_teacher, get_teachers, update_teacher
+
 
 urlpatterns = [
     path('', hello),
@@ -30,12 +33,15 @@ urlpatterns = [
     path('students/update/<int:id>/', update_student),
     path('teachers/', get_teachers),
     path('teachers/create/', create_teacher),
+    path('teachers/update/<int:id>/', update_teacher),
     path('groups/', get_groups),
     path('groups/create/', create_group),
+    path('groups/update/<int:id>/', update_group),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
