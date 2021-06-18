@@ -10,7 +10,7 @@ class Teacher(models.Model):
     experience = models.TextField(max_length=500)
 
     def __str__(self):
-        return f'{self.full_name()}, {self.age}, {self.subject}'
+        return f'{self.full_name()}, {self.age}, {self.subject}, {self.experience}'
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

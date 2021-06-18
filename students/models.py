@@ -5,7 +5,7 @@ from faker import Faker
 
 from django.db import models
 
-from students.validators import adult_validator, AdultValidator
+from students.validators import AdultValidator
 
 
 class Student(models.Model):
@@ -16,7 +16,6 @@ class Student(models.Model):
     age = models.IntegerField(default=42)
     email = models.EmailField(max_length=120, null=True)
     birthday = models.DateField(
-        # default=datetime.date.today, null=True, validators=[adult_validator]
         default=datetime.date.today, null=True, validators=[AdultValidator(21)]
     )
     enroll_date = models.DateField(default=datetime.date.today, null=True)
