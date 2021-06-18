@@ -4,7 +4,7 @@ from django.shortcuts import render # noqa
 
 from core import utils # noqa
 
-from groups.forms import GroupCreateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm
 from groups.models import Group
 
 from webargs import fields
@@ -30,7 +30,7 @@ def get_groups(request, args):
         if param_value:
             groups = groups.filter(**{param_name: param_value})
 
-    records = utils.format_records(groups)
+    records = utils.format_records(groups, 'groups')
 
     html_form = """
     <body>
@@ -43,7 +43,7 @@ def get_groups(request, args):
         <input type="text" name="lessons_count"><br><br>
         <label>Lessons passed:</label>
         <input type="text" name="lessons_passed"><br><br>
-        <input type="submit" value="Submit">
+        <input type="submit" value="Search">
     </form>
     </body>
     """
@@ -66,7 +66,35 @@ def create_group(request):
     <body>
     <form method="post">
       {form.as_p()}
-      <input type="submit" value="Submit">
+      <input type="submit" value="Store">
+    </form>
+    </body>
+    """
+
+    return HttpResponse(html_form)
+
+
+@csrf_exempt
+def update_group(request, id_group):
+    group = Group.objects.get(id=id_group)
+
+    if request.method == 'GET':
+        form = GroupUpdateForm(instance=group)
+    elif request.method == 'POST':
+        form = GroupUpdateForm(
+            data=request.POST,
+            instance=group
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/groups/')
+
+    html_form = f"""
+    <body>
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
     </form>
     </body>
     """

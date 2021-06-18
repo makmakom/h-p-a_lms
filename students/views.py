@@ -31,10 +31,11 @@ def hello(request):
 def get_students(request, args):
     students = Student.objects.all()
     for param_name, param_value in args.items():
+        print(param_value)
         if param_value:
             students = students.filter(**{param_name: param_value})
 
-    records = utils.format_records(students)
+    records = utils.format_records(students, 'students')
 
     html_form = """
     <body>
@@ -76,10 +77,12 @@ def create_student(request):
 
 
 @csrf_exempt
-def update_student(request, id):
-    student = Student.objects.get(id=id)
+def update_student(request, id_student):
+    student = Student.objects.get(id=id_student)
 
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = StudentUpdateForm(instance=student)
+    elif request.method == 'POST':
         form = StudentUpdateForm(
             data=request.POST,
             instance=student
@@ -88,8 +91,6 @@ def update_student(request, id):
             form.save()
 
             return HttpResponseRedirect('/students/')
-
-    form = StudentUpdateForm(instance=student)
 
     html_form = f"""
     <form method="post">
@@ -100,13 +101,3 @@ def update_student(request, id):
     """
 
     return HttpResponse(html_form)
-
-
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    result = []
-    for elem in lst:
-        formatted = f'<a href="/students/update/{elem.id}">{elem.id}</a> {elem}'
-        result.append(formatted)
-    return '<br>'.join(result)
