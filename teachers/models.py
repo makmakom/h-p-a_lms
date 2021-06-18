@@ -1,4 +1,5 @@
 from django.db import models
+from faker import Faker
 
 
 class Teacher(models.Model):
@@ -13,3 +14,16 @@ class Teacher(models.Model):
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
+
+    @staticmethod
+    def generate_teachers(count):
+        faker = Faker()
+        for _ in range(count):
+            t = Teacher(
+                first_name=faker.first_name(),
+                last_name=faker.last_name(),
+                age=faker.random_int(25, 45),
+                subject=faker.job(),
+                experience=faker.text()
+            )
+            t.save()

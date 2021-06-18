@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Students List</title>
+{% endblock %}
+
+{% block content %}
+<form action="" method="get">
+    <label for="fname">First name:</label>
+    <input type="text" id="fname" name="first_name"><br><br>
+
+    <label for="lname">Last name:</label>
+    <input type="text" id="lname" name="last_name"><br><br>
+
+    <label>Age:</label>
+    <input type="number" name="age"><br><br>
+
+    <input type="submit" value="Search">
+</form>
+<hr>
+{% for item in students %}
+    <a href="{% url 'students:update' item.id %}">{{item.id}}</a> {{item}}<br>
+{% endfor %}
+{% endblock %}

@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render # noqa
 
 from core import utils # noqa
 
-from students.forms import StudentCreateForm
+from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
 
 from webargs import fields
@@ -34,26 +35,15 @@ def get_students(request, args):
         if param_value:
             students = students.filter(**{param_name: param_value})
 
-    records = utils.format_records(students)
-
-    html_form = """
-    <body>
-    <form action="" method="get">
-        <label for="fname">First name:</label>
-        <input type="text" id="fname" name="first_name" ><br><br>
-        <label for="lname">Last name:</label>
-        <input type="text" id="lname" name="last_name" ><br><br>
-        <label>Birthday:</label>
-        <input type="date" name="birthday"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form + records)
+    return render(
+        request=request,
+        template_name='students/list.html',
+        context={
+            'students': students
+        }
+    )
 
 
-@csrf_exempt
 def create_student(request):
     if request.method == 'GET':
         form = StudentCreateForm()
@@ -62,15 +52,36 @@ def create_student(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/students/')
+            return HttpResponseRedirect(reverse('students:list'))
 
-    html_form = f"""
-    <body>
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
+    return render(
+        request=request,
+        template_name='students/create.html',
+        context={
+            'form': form
+        }
+    )
 
-    return HttpResponse(html_form)
+
+def update_student(request, id):
+    student = Student.objects.get(id=id)
+
+    if request.method == 'GET':
+        form = StudentUpdateForm(instance=student)
+    elif request.method == 'POST':
+        form = StudentUpdateForm(
+            data=request.POST,
+            instance=student
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('students:list'))
+
+    return render(
+        request=request,
+        template_name='students/update.html',
+        context={
+            'form': form
+        }
+    )
