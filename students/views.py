@@ -1,15 +1,14 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render # noqa
+
+from core import utils # noqa
 
 from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
-from django.shortcuts import render
 
-from webargs.djangoparser import use_args
 from webargs import fields
-
-
-# Create your views here.
+from webargs.djangoparser import use_args
 
 
 def hello(request):
@@ -35,21 +34,20 @@ def get_students(request, args):
         if param_value:
             students = students.filter(**{param_name: param_value})
 
-    records = format_records(students)
+    records = utils.format_records(students)
 
     html_form = """
+    <body>
     <form action="" method="get">
         <label for="fname">First name:</label>
         <input type="text" id="fname" name="first_name" ><br><br>
-        
         <label for="lname">Last name:</label>
         <input type="text" id="lname" name="last_name" ><br><br>
-        
-        <label>Age:</label>
-        <input type="number" name="age"><br><br>
-        
+        <label>Birthday:</label>
+        <input type="date" name="birthday"><br><br>
         <input type="submit" value="Search">
     </form>
+    </body>
     """
 
     return HttpResponse(html_form + records)
@@ -57,16 +55,17 @@ def get_students(request, args):
 
 @csrf_exempt
 def create_student(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = StudentCreateForm()
+    elif request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/students/')
 
-    form = StudentCreateForm()
-
     html_form = f"""
+    <body>
     <form method="post">
       {form.as_p()}
       <input type="submit" value="Create">
@@ -97,6 +96,7 @@ def update_student(request, id):
       {form.as_p()}
       <input type="submit" value="Save">
     </form>
+    </body>
     """
 
     return HttpResponse(html_form)
