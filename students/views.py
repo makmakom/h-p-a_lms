@@ -1,9 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render # noqa
+
+from core import utils # noqa
 
 from students.forms import StudentCreateForm
 from students.models import Student
-from django.shortcuts import render # noqa
 
 from webargs import fields
 from webargs.djangoparser import use_args
@@ -32,7 +34,7 @@ def get_students(request, args):
         if param_value:
             students = students.filter(**{param_name: param_value})
 
-    records = format_records(students)
+    records = utils.format_records(students)
 
     html_form = """
     <body>
@@ -53,14 +55,14 @@ def get_students(request, args):
 
 @csrf_exempt
 def create_student(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = StudentCreateForm()
+    elif request.method == 'POST':
         form = StudentCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/students/')
-
-    form = StudentCreateForm()
 
     html_form = f"""
     <body>
@@ -72,9 +74,3 @@ def create_student(request):
     """
 
     return HttpResponse(html_form)
-
-
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)

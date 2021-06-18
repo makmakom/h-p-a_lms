@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render # noqa
+
+from core import utils # noqa
 
 from teachers.forms import TeacherCreateForm
 from teachers.models import Teacher
-
-from django.shortcuts import render # noqa
 
 from webargs import fields
 from webargs.djangoparser import use_args
@@ -29,7 +30,7 @@ def get_teachers(request, args):
         if param_value:
             teachers = teachers.filter(**{param_name: param_value})
 
-    records = format_records(teachers)
+    records = utils.format_records(teachers)
 
     html_form = """
     <body>
@@ -50,14 +51,14 @@ def get_teachers(request, args):
 
 @csrf_exempt
 def create_teacher(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
+        form = TeacherCreateForm()
+    elif request.method == 'POST':
         form = TeacherCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect('/teachers/')
-
-    form = TeacherCreateForm()
 
     html_form = f"""
     <body>
@@ -69,9 +70,3 @@ def create_teacher(request):
     """
 
     return HttpResponse(html_form)
-
-
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)
