@@ -3,11 +3,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from core import utils # noqa
 
-from webargs import fields, validate
-from webargs.djangoparser import use_args
-
 from teachers.forms import TeacherCreateForm
 from teachers.models import Teacher
+
+from webargs import fields, validate
+from webargs.djangoparser import use_args
 
 
 @use_args({

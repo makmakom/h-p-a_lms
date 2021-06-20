@@ -1,9 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render # noqa
+from django.shortcuts import get_object_or_404, render  # noqa
 
-from core import utils # noqa
+from core import utils  # noqa
 
 from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
@@ -83,5 +82,21 @@ def update_student(request, id):
         template_name='students/update.html',
         context={
             'form': form
+        }
+    )
+
+
+def delete_student(request, id_student):
+    student = get_object_or_404(Student, id=id_student)
+
+    if request.method == 'POST':
+        student.delete()
+        return HttpResponseRedirect(reverse('students:list'))
+
+    return render(
+        request=request,
+        template_name='students/delete.html',
+        context={
+            'student': student
         }
     )
