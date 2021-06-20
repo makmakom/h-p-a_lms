@@ -1,7 +1,5 @@
-import datetime
-
 from django.core.exceptions import ValidationError
-from django.forms import ModelForm, DateInput
+from django.forms import DateInput, ModelForm
 
 from students.models import Student
 
@@ -35,14 +33,6 @@ class StudentBaseForm(ModelForm):
     def clean_last_name(self):
         last_name = self.cleaned_data['last_name']
         return self.normalize_name(last_name)
-
-    # def clean_birthday(self):
-    #     birthday = self.cleaned_data['birthday']
-    #     age = datetime.datetime.now().year - birthday.year
-    #     if age < 18:
-    #         raise ValidationError('Age should bee grater then 18 y.o.')
-    #
-    #     return birthday
 
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']
