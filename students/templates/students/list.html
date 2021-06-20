@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    <title>Students List</title>
+<title>Students List</title>
 {% endblock %}
 
 {% block content %}
@@ -17,8 +17,35 @@
 
     <input type="submit" value="Search">
 </form>
-<hr>
-{% for item in students %}
-    <a href="{% url 'students:update' item.id %}">{{item.id}}</a> {{item}}<br>
-{% endfor %}
+<p>Count of students: {{ students.count }}</p>
+
+<table class="table table-sm table-hover">
+    <thead>
+    <tr>
+        <th>ID | <i class="bi bi-pencil-square"></i></th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Birthday</th>
+        <th>X</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for item in students %}
+    <tr>
+        <td><a href="{% url 'students:update' item.id %}">{{ item.id }}</a></td>
+        <td>{{ item.first_name }}</td>
+        <td>{{ item.last_name }}</td>
+        <td>{{ item.email }}</td>
+        <td>{{ item.phone_number }}</td>
+        <td>{{ item.birthday }}</td>
+        <td><a href="{% url 'students:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+
+</table>
+
 {% endblock %}
