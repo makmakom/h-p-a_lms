@@ -30,13 +30,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('students/', get_students),
     path('students/create/', create_student),
-    path('students/update/<int:id>/', update_student),
+    path('students/update/<int:id_student>/', update_student),
     path('teachers/', get_teachers),
     path('teachers/create/', create_teacher),
-    path('teachers/update/<int:id>/', update_teacher),
+    path('teachers/update/<int:id_teacher>/', update_teacher),
     path('groups/', get_groups),
     path('groups/create/', create_group),
-    path('groups/update/<int:id>/', update_group),
+    path('groups/update/<int:id_group>/', update_group),
 ]
 
 if settings.DEBUG:
