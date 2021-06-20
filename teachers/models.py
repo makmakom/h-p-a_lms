@@ -9,6 +9,7 @@ class Teacher(models.Model):
     age = models.IntegerField(default=42)
     subject = models.CharField(max_length=120)
     experience = models.TextField(max_length=500)
+    # phone_number = models.TextField(max_length=16, unique=True)
 
     def __str__(self):
         return f'{self.full_name()}, {self.age}, {self.subject}, {self.experience}'
@@ -25,6 +26,6 @@ class Teacher(models.Model):
                 last_name=faker.last_name(),
                 age=faker.random_int(25, 45),
                 subject=faker.job(),
-                experience=faker.text()
+                experience=faker.text(),
             )
             t.save()
