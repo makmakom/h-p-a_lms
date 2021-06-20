@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 import students.models
 

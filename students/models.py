@@ -1,7 +1,10 @@
 import datetime
 
+from core.utils import fake_phone_number
+
 from django.core.validators import MinLengthValidator
 from django.db import models
+
 
 from faker import Faker
 
@@ -40,6 +43,6 @@ class Student(models.Model):
                 first_name=faker.first_name(),
                 last_name=faker.last_name(),
                 email=faker.email(),
-                phone_number=faker.phone_number()
+                phone_number=fake_phone_number(faker)
             )
             st.save()

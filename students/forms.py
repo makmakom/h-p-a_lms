@@ -42,7 +42,7 @@ class StudentBaseForm(ModelForm):
 
     def clean_phone_number(self):
         phone = self.cleaned_data['phone_number']
-        return '+' + re.sub(r'[^\d]', '', phone).lower()
+        return '+' + re.sub(r'[^\d]', '', phone)
 
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']
