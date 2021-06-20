@@ -1,6 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render # noqa
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
 
 from core import utils # noqa
 
@@ -30,28 +30,16 @@ def get_groups(request, args):
         if param_value:
             groups = groups.filter(**{param_name: param_value})
 
-    records = utils.format_records(groups)
-
-    html_form = """
-    <body>
-    <form action="" method="get">
-        <label for="fname">Name:</label>
-        <input type="text" id="fname" name="name" ><br><br>
-        <label>Start date:</label>
-        <input type="date" name="start"><br><br>
-        <label>Lessons count:</label>
-        <input type="text" name="lessons_count"><br><br>
-        <label>Lessons passed:</label>
-        <input type="text" name="lessons_passed"><br><br>
-        <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form + records)
+    return render(
+        request=request,
+        template_name='groups/list.html',
+        context={
+            'groups': groups,
+            'title': 'Groups List'
+        }
+    )
 
 
-@csrf_exempt
 def create_group(request):
     if request.method == 'GET':
         form = GroupCreateForm()
@@ -60,15 +48,13 @@ def create_group(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/groups/')
+            return HttpResponseRedirect(reverse('groups:list'))
 
-    html_form = f"""
-    <body>
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form)
+    return render(
+        request=request,
+        template_name='groups/create.html',
+        context={
+            'form': form,
+            'title': 'Create group'
+        }
+    )

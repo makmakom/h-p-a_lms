@@ -8,6 +8,7 @@
 </head>
 <body>
 <a href="{% url 'index' %}"><h3>LMS</h3></a>
+    <h1>{% block h_title %}{% endblock %}</h1>
     {% block content %}
     {% endblock %}
 </body>

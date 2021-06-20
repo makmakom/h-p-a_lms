@@ -1,7 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render # noqa
 
 from core import utils # noqa
 
@@ -10,10 +9,6 @@ from students.models import Student
 
 from webargs import fields
 from webargs.djangoparser import use_args
-
-
-def hello(request):
-    return HttpResponse('Hello!')
 
 
 @use_args({
@@ -39,7 +34,8 @@ def get_students(request, args):
         request=request,
         template_name='students/list.html',
         context={
-            'students': students
+            'students': students,
+            'title': 'Students list',
         }
     )
 
@@ -58,7 +54,8 @@ def create_student(request):
         request=request,
         template_name='students/create.html',
         context={
-            'form': form
+            'form': form,
+            'title': 'Create student',
         }
     )
 
@@ -82,6 +79,7 @@ def update_student(request, id):
         request=request,
         template_name='students/update.html',
         context={
-            'form': form
+            'form': form,
+            'title': 'Update student',
         }
     )

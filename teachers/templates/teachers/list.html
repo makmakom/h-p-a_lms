@@ -28,16 +28,16 @@
         <th>ID</th>
         <th>First name</th>
         <th>Last name</th>
-        <th>Birthday</th>
+        <th>Age</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in students %}
+    {% for item in teachers %}
     <tr>
-        <td><a href="{% url 'students:update' item.id %}">{{ item.id }}</a></td>
+        <td>{{ item.id }}</td>
         <td>{{ item.first_name }}</td>
         <td>{{ item.last_name }}</td>
-        <td>{{ item.birthday }}</td>
+        <td>{{ item.age }}</td>
     </tr>
     {% endfor %}
     </tbody>

@@ -26,18 +26,18 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Birthday</th>
+        <th>Name</th>
+        <th>Start</th>
+        <th>Description</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in students %}
+    {% for item in groups %}
     <tr>
-        <td><a href="{% url 'students:update' item.id %}">{{ item.id }}</a></td>
-        <td>{{ item.first_name }}</td>
-        <td>{{ item.last_name }}</td>
-        <td>{{ item.birthday }}</td>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.start }}</td>
+        <td>{{ item.description }}</td>
     </tr>
     {% endfor %}
     </tbody>

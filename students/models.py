@@ -1,9 +1,9 @@
 import datetime
 
 from django.core.validators import MinLengthValidator
-from faker import Faker
-
 from django.db import models
+
+from faker import Faker
 
 from students.validators import AdultValidator
 
