@@ -22,7 +22,7 @@ def hello(request):
     "last_name": fields.Str(
         required=False,
     ),
-    "birthday": fields.Date(
+    "birthday": fields.Str(
         required=False,
     )
 },
@@ -31,7 +31,6 @@ def hello(request):
 def get_students(request, args):
     students = Student.objects.all()
     for param_name, param_value in args.items():
-        print(param_value)
         if param_value:
             students = students.filter(**{param_name: param_value})
 
