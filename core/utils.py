@@ -1,7 +1,7 @@
 from faker import Faker
 
 
-def format_records(lst, url_part) -> object:
+def format_records(lst, url_part) -> str:
     if len(lst) == 0:
         return '(Emtpy recordset)'
     result = []

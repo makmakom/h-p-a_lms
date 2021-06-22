@@ -82,8 +82,8 @@ def create_teacher(request):
 
 
 @csrf_exempt
-def update_teacher(request, id_teacher):
-    group = Teacher.objects.get(id=id_teacher)
+def update_teacher(request, pk):
+    group = Teacher.objects.get(id=pk)
 
     if request.method == 'GET':
         form = TeacherUpdateForm(instance=group)

@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 
 import students.models
 
@@ -14,14 +14,9 @@ def adult_validator(birthday):
 
 
 def phone_validator(phone):
-    try:
-        students.models.Student.objects.get(phone_number=phone)
-    except ObjectDoesNotExist:
-        return True
-
-    raise ValidationError('Phone exists')
+    if students.models.Student.objects.filter(phone_number=phone).exists():
+        raise ValidationError('Phone exists')
 
 
 def email_validator(email):
-    if email:
-        raise ValidationError('Email error')
+    pass

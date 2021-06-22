@@ -19,7 +19,8 @@ class TeacherBaseForm(ModelForm):
         widgets = {
             'phone_number': DateInput(attrs={
                 'type': 'phone',
-                'placeholder': '+38 000 132-45-67'
+                'placeholder': '+38 000 132-4567',
+                'pattern': r'\+[0-9]{2} [0-9]{3} [0-9]{3}-[0-9]{4}',
             })
         }
 

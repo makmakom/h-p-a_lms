@@ -1,12 +1,8 @@
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.core.exceptions import ValidationError
 
 import teachers.models
 
 
 def phone_validator(phone):
-    try:
-        teachers.models.Teacher.objects.get(phone_number=phone)
-    except ObjectDoesNotExist:
-        return True
-
-    raise ValidationError('Phone exists')
+    if teachers.models.Teacher.objects.filter(phone_number=phone).exists():
+        raise ValidationError('Phone exists')
