@@ -1,6 +1,6 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render  # noqa
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import reverse
 
 from core import utils  # noqa
 
@@ -40,26 +40,16 @@ def get_teachers(request, args):
         else:
             teachers = teachers.filter(**{param_name: param_value})
 
-    records = utils.format_records(teachers, 'teachers')
-
-    html_form = """
-        <body>
-        <form action="" method="get">
-            <label for="fname">First name:</label>
-            <input type="text" id="fname" name="first_name" ><br><br>
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" name="last_name" ><br><br>
-            <label>Age:</label>
-            <input type="number" name="age"><br><br>
-            <input type="submit" value="Submit">
-        </form>
-        </body>
-        """
-
-    return HttpResponse(html_form + records)
+    return render(
+        request=request,
+        template_name='teachers/list.html',
+        context={
+            'teachers': teachers,
+            'title': 'Teachers List'
+        }
+    )
 
 
-@csrf_exempt
 def create_teacher(request):
     if request.method == 'GET':
         form = TeacherCreateForm()
@@ -68,21 +58,18 @@ def create_teacher(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/teachers/')
+            return HttpResponseRedirect(reverse('teachers:list'))
 
-    html_form = f"""
-    <body>
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form)
+    return render(
+        request=request,
+        template_name='teachers/create.html',
+        context={
+            'form': form,
+            'title': 'Create teacher'
+        }
+    )
 
 
-@csrf_exempt
 def update_teacher(request, pk):
     group = Teacher.objects.get(id=pk)
 
