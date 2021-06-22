@@ -5,6 +5,7 @@ from django.shortcuts import render  # noqa
 from core import utils  # noqa
 
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm
+
 from teachers.models import Teacher
 
 from webargs import fields, validate

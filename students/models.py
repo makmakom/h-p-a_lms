@@ -5,10 +5,9 @@ from core.utils import fake_phone_number
 from django.core.validators import MinLengthValidator
 from django.db import models
 
-
 from faker import Faker
 
-from students.validators import adult_validator, email_validator, phone_validator
+from students.validators import AdultValidator, email_validator, phone_validator
 
 
 class Student(models.Model):
@@ -20,9 +19,9 @@ class Student(models.Model):
     email = models.EmailField(max_length=120, null=True, validators=[
         email_validator
     ])
-    birthday = models.DateField(default=datetime.date.today, null=True, validators=[
-        adult_validator
-    ])
+    birthday = models.DateField(
+        default=datetime.date.today, null=True, validators=[AdultValidator(21)]
+    )
     enroll_date = models.DateField(default=datetime.date.today, null=True)
     graduate_date = models.DateField(default=datetime.date.today, null=True)
     phone_number = models.TextField(max_length=16, null=True, unique=True, validators=[

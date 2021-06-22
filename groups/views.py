@@ -5,6 +5,7 @@ from django.shortcuts import render # noqa
 from core import utils # noqa
 
 from groups.forms import GroupCreateForm, GroupUpdateForm
+
 from groups.models import Group
 
 from webargs import fields
@@ -67,34 +68,6 @@ def create_group(request):
     <form method="post">
       {form.as_p()}
       <input type="submit" value="Store">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form)
-
-
-@csrf_exempt
-def update_group(request, pk):
-    group = Group.objects.get(id=pk)
-
-    if request.method == 'GET':
-        form = GroupUpdateForm(instance=group)
-    elif request.method == 'POST':
-        form = GroupUpdateForm(
-            data=request.POST,
-            instance=group
-        )
-        if form.is_valid():
-            form.save()
-
-            return HttpResponseRedirect('/groups/')
-
-    html_form = f"""
-    <body>
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Save">
     </form>
     </body>
     """
