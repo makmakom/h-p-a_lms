@@ -4,6 +4,10 @@ from django.urls import reverse
 
 from core import utils # noqa
 
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
+from django.shortcuts import get_object_or_404, render  # noqa
+
 from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
 
@@ -18,7 +22,7 @@ from webargs.djangoparser import use_args
     "last_name": fields.Str(
         required=False,
     ),
-    "birthday": fields.Date(
+    "birthday": fields.Str(
         required=False,
     )
 },
@@ -60,8 +64,8 @@ def create_student(request):
     )
 
 
-def update_student(request, id):
-    student = Student.objects.get(id=id)
+def update_student(request, pk):
+    student = Student.objects.get(id=pk)
 
     if request.method == 'GET':
         form = StudentUpdateForm(instance=student)
@@ -74,12 +78,28 @@ def update_student(request, id):
             form.save()
 
             return HttpResponseRedirect(reverse('students:list'))
-
+          
     return render(
         request=request,
         template_name='students/update.html',
         context={
             'form': form,
             'title': 'Update student',
+        }
+    )
+
+
+def delete_student(request, id_student):
+    student = get_object_or_404(Student, id=id_student)
+
+    if request.method == 'POST':
+        student.delete()
+        return HttpResponseRedirect(reverse('students:list'))
+
+    return render(
+        request=request,
+        template_name='students/delete.html',
+        context={
+            'student': student
         }
     )
