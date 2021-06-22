@@ -4,7 +4,8 @@ from django.urls import reverse
 
 from core import utils # noqa
 
-from groups.forms import GroupCreateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm
+
 from groups.models import Group
 
 from webargs import fields

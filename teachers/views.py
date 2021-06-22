@@ -2,9 +2,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from core import utils # noqa
+from core import utils  # noqa
 
-from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm
+
 from teachers.models import Teacher
 
 from webargs import fields, validate
@@ -67,3 +68,30 @@ def create_teacher(request):
             'title': 'Create teacher'
         }
     )
+
+
+def update_teacher(request, pk):
+    group = Teacher.objects.get(id=pk)
+
+    if request.method == 'GET':
+        form = TeacherUpdateForm(instance=group)
+    elif request.method == 'POST':
+        form = TeacherUpdateForm(
+            data=request.POST,
+            instance=group
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect('/teachers/')
+
+    html_form = f"""
+    <body>
+    <form method="post">
+      {form.as_p()}
+      <input type="submit" value="Save">
+    </form>
+    </body>
+    """
+
+    return HttpResponse(html_form)
