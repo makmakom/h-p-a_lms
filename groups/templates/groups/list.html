@@ -21,23 +21,27 @@
 
     <input type="submit" value="Search">
 </form>
-<hr>
-<table>
+
+<p>Count of groups: {{ groups.count }}</p>
+
+<table class="table table-sm table-hover">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>ID | <i class="bi bi-pencil-square"></i></th>
         <th>Name</th>
         <th>Start</th>
         <th>Description</th>
+        <th>X</th>
     </tr>
     </thead>
     <tbody>
     {% for item in groups %}
     <tr>
-        <td>{{ item.id }}</td>
+        <td><a href="{% url 'groups:update' item.id %}">{{ item.id }}</a></td>
         <td>{{ item.name }}</td>
         <td>{{ item.start }}</td>
         <td>{{ item.description }}</td>
+        <td><a href="{% url 'groups:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>
     {% empty %}
     <p>List is empty.</p>
