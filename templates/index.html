@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'students:list' %}">Students</a>
+<ul>
+    <li><a href="{% url 'students:list' %}">Students</a></li>
+    <li><a href="{% url 'teachers:list' %}">Teachers</a></li>
+    <li><a href="{% url 'groups:list' %}">Groups</a></li>
+</ul>
 {% endblock %}
