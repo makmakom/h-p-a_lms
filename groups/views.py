@@ -75,8 +75,8 @@ def create_group(request):
 
 
 @csrf_exempt
-def update_group(request, id_group):
-    group = Group.objects.get(id=id_group)
+def update_group(request, pk):
+    group = Group.objects.get(id=pk)
 
     if request.method == 'GET':
         form = GroupUpdateForm(instance=group)

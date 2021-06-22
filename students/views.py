@@ -76,8 +76,8 @@ def create_student(request):
 
 
 @csrf_exempt
-def update_student(request, id_student):
-    student = Student.objects.get(id=id_student)
+def update_student(request, pk):
+    student = Student.objects.get(id=pk)
 
     if request.method == 'GET':
         form = StudentUpdateForm(instance=student)
