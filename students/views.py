@@ -1,8 +1,10 @@
 from django.http import HttpResponse, HttpResponseRedirect
+
+from core import utils # noqa
+
+from django.views.decorators.csrf import csrf_exempt
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render  # noqa
-
-from core import utils  # noqa
 
 from students.forms import StudentCreateForm, StudentUpdateForm
 from students.models import Student
@@ -22,7 +24,7 @@ def hello(request):
     "last_name": fields.Str(
         required=False,
     ),
-    "birthday": fields.Date(
+    "birthday": fields.Str(
         required=False,
     )
 },
@@ -62,8 +64,8 @@ def create_student(request):
     )
 
 
-def update_student(request, id):
-    student = Student.objects.get(id=id)
+def update_student(request, pk):
+    student = Student.objects.get(id=pk)
 
     if request.method == 'GET':
         form = StudentUpdateForm(instance=student)
@@ -76,7 +78,7 @@ def update_student(request, id):
             form.save()
 
             return HttpResponseRedirect(reverse('students:list'))
-
+          
     return render(
         request=request,
         template_name='students/update.html',
