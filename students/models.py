@@ -3,6 +3,8 @@ import datetime
 from django.core.validators import MinLengthValidator
 from django.db import models
 
+from dateutil.relativedelta import relativedelta
+
 from faker import Faker
 
 from students.validators import AdultValidator
@@ -37,4 +39,5 @@ class Student(models.Model):
                 email=faker.email(),
                 birthday=faker.date_between(start_date='-65y', end_date='-18y')
             )
+            st.age = relativedelta(datetime.date.today(), st.birthday).years
             st.save()

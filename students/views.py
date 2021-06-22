@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render  # noqa
 
 from core import utils  # noqa
 
-from students.forms import StudentCreateForm, StudentUpdateForm
+from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
 
 from webargs import fields
@@ -34,11 +34,13 @@ def get_students(request, args):
         if param_value:
             students = students.filter(**{param_name: param_value})
 
+    obj_filter = StudentsFilter(data=request.GET, queryset=students)
+
     return render(
         request=request,
         template_name='students/list.html',
         context={
-            'students': students
+            'obj_filter': obj_filter,
         }
     )
 
