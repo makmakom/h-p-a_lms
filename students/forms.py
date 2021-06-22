@@ -1,3 +1,4 @@
+import django_filters
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
 
@@ -34,14 +35,6 @@ class StudentBaseForm(ModelForm):
         last_name = self.cleaned_data['last_name']
         return self.normalize_name(last_name)
 
-    # def clean_birthday(self):
-    #     birthday = self.cleaned_data['birthday']
-    #     age = datetime.datetime.now().year - birthday.year
-    #     if age < 18:
-    #         raise ValidationError('Age should bee grater then 18 y.o.')
-    #
-    #     return birthday
-
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']
         graduate_date = self.cleaned_data['graduate_date']
@@ -63,3 +56,13 @@ class StudentUpdateForm(StudentBaseForm):
             'enroll_date',
             'graduate_date',
         ]
+
+
+class StudentsFilter(django_filters.FilterSet):
+    class Meta:
+        model = Student
+        fields = {
+            'age': ['lt', 'gt'],
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith'],
+        }
