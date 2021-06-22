@@ -39,6 +39,8 @@
         <td>{{ item.last_name }}</td>
         <td>{{ item.age }}</td>
     </tr>
+    {% empty %}
+    <p>List is empty.</p>
     {% endfor %}
     </tbody>
 </table>

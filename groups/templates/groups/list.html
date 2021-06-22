@@ -39,6 +39,8 @@
         <td>{{ item.start }}</td>
         <td>{{ item.description }}</td>
     </tr>
+    {% empty %}
+    <p>List is empty.</p>
     {% endfor %}
     </tbody>
 </table>
