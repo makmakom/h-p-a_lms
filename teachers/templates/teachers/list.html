@@ -22,22 +22,24 @@
     <input type="submit" value="Search">
 </form>
 <hr>
-<table>
+<table class="table table-sm table-hover">
     <thead>
     <tr>
-        <th>ID</th>
+        <th>ID | <i class="bi bi-pencil-square"></i></th>
         <th>First name</th>
         <th>Last name</th>
         <th>Age</th>
+        <th>X</th>
     </tr>
     </thead>
     <tbody>
     {% for item in teachers %}
     <tr>
-        <td>{{ item.id }}</td>
+        <td><a href="{% url 'teachers:update' item.id %}">{{ item.id }}</a></td>
         <td>{{ item.first_name }}</td>
         <td>{{ item.last_name }}</td>
         <td>{{ item.age }}</td>
+        <td><a href="{% url 'teachers:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>
     {% empty %}
     <p>List is empty.</p>
