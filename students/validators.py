@@ -26,4 +26,3 @@ class AdultValidator:
 
     def __call__(self, birthdate):
         adult_validator(birthdate)
-        
