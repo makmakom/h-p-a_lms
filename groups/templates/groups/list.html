@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block h_title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<form action="" method="get">
+    <label for="fname">First name:</label>
+    <input type="text" id="fname" name="first_name"><br><br>
+
+    <label for="lname">Last name:</label>
+    <input type="text" id="lname" name="last_name"><br><br>
+
+    <label>Age:</label>
+    <input type="number" name="age"><br><br>
+
+    <input type="submit" value="Search">
+</form>
+
+<p>Count of groups: {{ groups.count }}</p>
+
+<table class="table table-sm table-hover">
+    <thead>
+    <tr>
+        <th>ID | <i class="bi bi-pencil-square"></i></th>
+        <th>Name</th>
+        <th>Start</th>
+        <th>Description</th>
+        <th>X</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in groups %}
+    <tr>
+        <td><a href="{% url 'groups:update' item.id %}">{{ item.id }}</a></td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.start }}</td>
+        <td>{{ item.description }}</td>
+        <td><a href="{% url 'groups:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
+    </tr>
+    {% empty %}
+    <p>List is empty.</p>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

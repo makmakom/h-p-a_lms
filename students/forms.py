@@ -1,3 +1,5 @@
+import re
+
 import django_filters
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
@@ -11,7 +13,7 @@ class StudentBaseForm(ModelForm):
         fields = [
             'first_name',
             'last_name',
-            'age',
+            'phone_number',
             'birthday',
             'enroll_date',
             'graduate_date',
@@ -20,7 +22,12 @@ class StudentBaseForm(ModelForm):
         widgets = {
             'birthday': DateInput(attrs={'type': 'date'}),
             'enroll_date': DateInput(attrs={'type': 'date'}),
-            'graduate_date': DateInput(attrs={'type': 'date'})
+            'graduate_date': DateInput(attrs={'type': 'date'}),
+            'phone_number': DateInput(attrs={
+                'type': 'phone',
+                'placeholder': '+38 000 132-4567',
+                'pattern': r'\+[0-9]{2} [0-9]{3} [0-9]{3}-[0-9]{4}',
+            })
         }
 
     @staticmethod
@@ -34,6 +41,10 @@ class StudentBaseForm(ModelForm):
     def clean_last_name(self):
         last_name = self.cleaned_data['last_name']
         return self.normalize_name(last_name)
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data['phone_number']
+        return '+' + re.sub(r'[^\d]', '', phone)
 
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']
@@ -52,6 +63,8 @@ class StudentUpdateForm(StudentBaseForm):
         fields = [
             'first_name',
             'last_name',
+            'email',
+            'phone_number',
             'birthday',
             'enroll_date',
             'graduate_date',

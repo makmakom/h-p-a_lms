@@ -3,7 +3,11 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-<title>Students List</title>
+<title>{{ title }}</title>
+{% endblock %}
+
+{% block h_title %}
+{{ title }}
 {% endblock %}
 
 {% block content %}
@@ -38,9 +42,10 @@
         <td>{{ item.birthday }}</td>
         <td><a href="{% url 'students:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>
+    {% empty %}
+    <p>List is empty.</p>
     {% endfor %}
     </tbody>
 
 </table>
-
 {% endblock %}
