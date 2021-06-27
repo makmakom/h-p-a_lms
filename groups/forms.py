@@ -1,5 +1,6 @@
-import django_filters
 from django.forms import DateInput, ModelForm
+
+import django_filters
 
 from groups.models import Group
 
