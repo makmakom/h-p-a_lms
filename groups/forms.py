@@ -1,3 +1,4 @@
+import django_filters
 from django.forms import DateInput, ModelForm
 
 from groups.models import Group
@@ -33,3 +34,12 @@ class GroupUpdateForm(GroupBaseForm):
             'lessons_passed',
             'description',
         ]
+
+
+class GroupsFilter(django_filters.FilterSet):
+    class Meta:
+        model = Group
+        fields = {
+            'name': ['exact', 'icontains'],
+            'lessons_count': ['lt', 'gt'],
+        }
