@@ -1,9 +1,8 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
 
-from core import utils # noqa
-
-from teachers.forms import TeacherCreateForm
+from teachers.forms import TeacherCreateForm, TeacherUpdateForm
 from teachers.models import Teacher
 
 from webargs import fields, validate
@@ -38,25 +37,16 @@ def get_teachers(request, args):
         else:
             teachers = teachers.filter(**{param_name: param_value})
 
-    records = utils.format_records(teachers)
-    html_form = """
-        <body>
-        <form action="" method="get">
-            <label for="fname">First name:</label>
-            <input type="text" id="fname" name="first_name" ><br><br>
-            <label for="lname">Last name:</label>
-            <input type="text" id="lname" name="last_name" ><br><br>
-            <label>Age:</label>
-            <input type="number" name="age"><br><br>
-            <input type="submit" value="Submit">
-        </form>
-        </body>
-        """
-
-    return HttpResponse(html_form + records)
+    return render(
+        request=request,
+        template_name='teachers/list.html',
+        context={
+            'teachers': teachers,
+            'title': 'Teachers List'
+        }
+    )
 
 
-@csrf_exempt
 def create_teacher(request):
     if request.method == 'GET':
         form = TeacherCreateForm()
@@ -65,22 +55,55 @@ def create_teacher(request):
         if form.is_valid():
             form.save()
 
-            return HttpResponseRedirect('/teachers/')
+            return HttpResponseRedirect(reverse('teachers:list'))
 
-    html_form = f"""
-    <body>
-    <form method="post">
-      {form.as_p()}
-      <input type="submit" value="Submit">
-    </form>
-    </body>
-    """
-
-    return HttpResponse(html_form)
+    return render(
+        request=request,
+        template_name='teachers/create.html',
+        context={
+            'form': form,
+            'title': 'Create teacher'
+        }
+    )
 
 
-# todo: need to move to Utils
-def format_records(lst):
-    if len(lst) == 0:
-        return '(Emtpy recordset)'
-    return '<br>'.join(str(elem) for elem in lst)
+def update_teacher(request, pk):
+    teacher = Teacher.objects.get(id=pk)
+
+    if request.method == 'GET':
+        form = TeacherUpdateForm(instance=teacher)
+    elif request.method == 'POST':
+        form = TeacherUpdateForm(
+            data=request.POST,
+            instance=teacher
+        )
+        if form.is_valid():
+            form.save()
+
+            return HttpResponseRedirect(reverse('teachers:list'))
+
+    return render(
+        request=request,
+        template_name='teachers/update.html',
+        context={
+            'form': form,
+            'title': 'Update teacher',
+        }
+    )
+
+
+def delete_teacher(request, pk):
+    teacher = get_object_or_404(Teacher, id=pk)
+
+    if request.method == 'POST':
+        teacher.delete()
+        return HttpResponseRedirect(reverse('teachers:list'))
+
+    return render(
+        request=request,
+        template_name='teachers/delete.html',
+        context={
+            'teacher': teacher,
+            'title': 'Delete teacher',
+        }
+    )
