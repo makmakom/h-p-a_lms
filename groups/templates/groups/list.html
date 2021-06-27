@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
 <title>{{ title }}</title>
 {% endblock %}
@@ -10,19 +12,11 @@
 
 {% block content %}
 <form action="" method="get">
-    <label for="fname">First name:</label>
-    <input type="text" id="fname" name="first_name"><br><br>
-
-    <label for="lname">Last name:</label>
-    <input type="text" id="lname" name="last_name"><br><br>
-
-    <label>Age:</label>
-    <input type="number" name="age"><br><br>
-
-    <input type="submit" value="Search">
+    {{ obj_filter.form | crispy }}
+    <input class="btn btn-success mb-3 mt-3" type="submit" value="Search">
 </form>
 
-<p>Count of groups: {{ groups.count }}</p>
+<p><strong>Count of groups: {{ obj_filter.qs.count }}</strong></p>
 
 <table class="table table-sm table-hover">
     <thead>
@@ -35,7 +29,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for item in groups %}
+    {% for item in obj_filter.qs %}
     <tr>
         <td><a href="{% url 'groups:update' item.id %}">{{ item.id }}</a></td>
         <td>{{ item.name }}</td>
