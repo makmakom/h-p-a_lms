@@ -80,6 +80,7 @@ def update_group(request, pk):
         template_name='groups/update.html',
         context={
             'form': form,
+            'teachers': group.teachers.all(),
             'title': 'Update group',
         }
     )

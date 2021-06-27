@@ -57,6 +57,7 @@ class TeacherUpdateForm(TeacherBaseForm):
             'age',
             'subject',
             'experience',
+            'group',
         ]
 
 
