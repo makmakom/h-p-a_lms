@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
-from groups.forms import GroupCreateForm, GroupUpdateForm
+from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
 
 from webargs import fields
@@ -28,11 +28,13 @@ def get_groups(request, args):
         if param_value:
             groups = groups.filter(**{param_name: param_value})
 
+    obj_filter = GroupsFilter(data=request.GET, queryset=groups)
+
     return render(
         request=request,
         template_name='groups/list.html',
         context={
-            'groups': groups,
+            'obj_filter': obj_filter,
             'title': 'Groups List'
         }
     )
@@ -78,6 +80,7 @@ def update_group(request, pk):
         template_name='groups/update.html',
         context={
             'form': form,
+            'teachers': group.teachers.all(),
             'title': 'Update group',
         }
     )

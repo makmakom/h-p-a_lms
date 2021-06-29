@@ -2,6 +2,8 @@ import re
 
 from django.forms import DateInput, ModelForm
 
+import django_filters
+
 from teachers.models import Teacher
 
 
@@ -55,4 +57,15 @@ class TeacherUpdateForm(TeacherBaseForm):
             'age',
             'subject',
             'experience',
+            'group',
         ]
+
+
+class TeachersFilter(django_filters.FilterSet):
+    class Meta:
+        model = Teacher
+        fields = {
+            'age': ['lt', 'gt'],
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith'],
+        }
