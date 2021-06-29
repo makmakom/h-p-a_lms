@@ -2,10 +2,11 @@ import datetime
 
 from core.utils import fake_phone_number
 
+from dateutil.relativedelta import relativedelta
+
 from django.core.validators import MinLengthValidator
 from django.db import models
 
-from dateutil.relativedelta import relativedelta
 
 from faker import Faker
 
@@ -22,7 +23,7 @@ class Student(models.Model):
         email_validator
     ])
     birthday = models.DateField(
-        default=datetime.date.today, null=True, validators=[AdultValidator(21)]
+        # default=datetime.date.today, null=True, validators=[AdultValidator(21)]
     )
     enroll_date = models.DateField(default=datetime.date.today, null=True)
     graduate_date = models.DateField(default=datetime.date.today, null=True)

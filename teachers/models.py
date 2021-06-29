@@ -4,6 +4,8 @@ from django.db import models
 
 from faker import Faker
 
+from groups.models import Group
+
 from teachers.validators import phone_validator
 
 
@@ -16,9 +18,10 @@ class Teacher(models.Model):
     phone_number = models.TextField(max_length=16, null=True, unique=True, validators=[
         phone_validator
     ])
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='teachers')
 
     def __str__(self):
-        return f'{self.full_name()}, {self.age}, {self.subject}, {self.experience}'
+        return f'{self.full_name()}, {self.age}, {self.subject}, {self.experience}, {self.group}'
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
