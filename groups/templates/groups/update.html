@@ -32,4 +32,9 @@
         {% endfor %}
     </ul>
 </div>
+
+{% with list_objects=group.students.all %}
+    {% include 'includes/students-list-table.html' %}
+{% endwith %}
+
 {% endblock %}
