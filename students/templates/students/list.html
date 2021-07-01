@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-<title>{{ title }}</title>
+{{ title }}
 {% endblock %}
 
 {% block h_title %}
@@ -27,6 +27,7 @@
         <th>Email</th>
         <th>Phone</th>
         <th>Birthday</th>
+        <th>Group</th>
         <th>X</th>
     </tr>
     </thead>
@@ -40,6 +41,7 @@
         <td>{{ item.email }}</td>
         <td>{{ item.phone_number }}</td>
         <td>{{ item.birthday }}</td>
+        <td>{% if item.group %}{{ item.group }}{% endif %}</td>
         <td><a href="{% url 'students:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>
     {% empty %}

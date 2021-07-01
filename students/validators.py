@@ -12,7 +12,7 @@ def adult_validator(birthday, adult_age_limit=18):
 
 
 def phone_validator(phone):
-    if students.models.Student.objects.filter(phone_number=phone).exists():
+    if students.models.Student.objects.filter(phone_number=phone).exclude(id, sel).exists():
         raise ValidationError('Phone exists')
 
 

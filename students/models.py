@@ -10,6 +10,7 @@ from django.db import models
 
 from faker import Faker
 
+from groups.models import Group
 from students.validators import AdultValidator, email_validator, phone_validator
 
 
@@ -30,6 +31,7 @@ class Student(models.Model):
     phone_number = models.TextField(max_length=16, null=True, unique=True, validators=[
         phone_validator
     ])
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
 
     def __str__(self):
         return f'{self.full_name()}, {self.birthday}'

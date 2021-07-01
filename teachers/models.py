@@ -1,3 +1,4 @@
+from core.models import Person
 from core.utils import fake_phone_number
 
 from django.db import models
@@ -9,7 +10,7 @@ from groups.models import Group
 from teachers.validators import phone_validator
 
 
-class Teacher(models.Model):
+class Teacher(Person):
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=80, null=False)
     age = models.IntegerField(default=42)
@@ -39,3 +40,9 @@ class Teacher(models.Model):
                 phone_number=fake_phone_number(faker)
             )
             t.save()
+
+    @classmethod
+    def _generate(cls):
+        obj = super()._generate()
+        obj.salary = randint(1000, 3000)
+        obj.save()

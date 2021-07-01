@@ -27,7 +27,7 @@ class StudentBaseForm(ModelForm):
             'phone_number': DateInput(attrs={
                 'type': 'phone',
                 'placeholder': '+38 000 132-4567',
-                'pattern': r'\+[0-9]{2} [0-9]{3} [0-9]{3}-[0-9]{4}',
+                'pattern': r'\+[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}',
             })
         }
 
@@ -61,15 +61,16 @@ class StudentCreateForm(StudentBaseForm):
 class StudentUpdateForm(StudentBaseForm):
     class Meta(StudentBaseForm.Meta):
         model = Student
-        fields = [
-            'first_name',
-            'last_name',
-            'email',
-            'phone_number',
-            'birthday',
-            'enroll_date',
-            'graduate_date',
-        ]
+        # fields = [
+        #     'first_name',
+        #     'last_name',
+        #     'email',
+        #     'phone_number',
+        #     'birthday',
+        #     'enroll_date',
+        #     'graduate_date',
+        # ]
+        fields = '__all__'
 
 
 class StudentsFilter(django_filters.FilterSet):

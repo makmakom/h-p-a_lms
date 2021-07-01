@@ -23,11 +23,7 @@ from webargs.djangoparser import use_args
     location="query"
 )
 def get_students(request, args):
-    students = Student.objects.all()
-    for param_name, param_value in args.items():
-        if param_value:
-            students = students.filter(**{param_name: param_value})
-
+    students = Student.objects.all().select_related('group')
     obj_filter = StudentsFilter(data=request.GET, queryset=students)
 
     return render(
