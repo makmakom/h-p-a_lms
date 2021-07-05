@@ -10,6 +10,10 @@ class StudentBaseForm(ModelForm):
     class Meta:
         model = Student
         fields = '__all__'
+        exclude = [
+            'created_at',
+            'updated_at',
+        ]
         widgets = {
             'birthdate': DateInput(attrs={'type': 'date'}),
             'enroll_date': DateInput(attrs={'type': 'date'}),
@@ -40,9 +44,7 @@ class StudentCreateForm(StudentBaseForm):
 
 
 class StudentUpdateForm(StudentBaseForm):
-    class Meta(StudentBaseForm.Meta):
-        model = Student
-        fields = '__all__'
+    pass
 
 
 class StudentsFilter(django_filters.FilterSet):
