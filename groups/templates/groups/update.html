@@ -20,21 +20,18 @@
     </div>
 </form>
 
-<div class="mt-3">
+<div class="mt-4">
     <h3>Related teachers</h3>
-    <ul class="list-group">
-        {% for teacher in teachers %}
-        <li class="list-group-item">{{ teacher.first_name }} {{ teacher.last_name }}</li>
-        {% empty %}
-        <div class="mt-3">
-            <p>Empty list.</p>
-        </div>
-        {% endfor %}
-    </ul>
+    {% with list_objects=teachers %}
+    {% include 'includes/teacher-list-table.html' %}
+    {% endwith %}
 </div>
 
-{% with list_objects=group.students.all %}
+<div class="mt-4">
+    <h3>Related students</h3>
+    {% with list_objects=students %}
     {% include 'includes/student-list-table.html' %}
-{% endwith %}
+    {% endwith %}
+</div>
 
 {% endblock %}
