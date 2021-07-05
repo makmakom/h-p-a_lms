@@ -8,14 +8,11 @@ from groups.models import Group
 class GroupBaseForm(ModelForm):
     class Meta:
         model = Group
-        fields = [
-            'name',
-            'start',
-            'lessons_count',
-            'lessons_passed',
-            'description',
+        fields = '__all__'
+        exclude = [
+            'created_at',
+            'updated_at',
         ]
-
         widgets = {
             'start': DateInput(attrs={'type': 'date'}),
         }
@@ -26,15 +23,7 @@ class GroupCreateForm(GroupBaseForm):
 
 
 class GroupUpdateForm(GroupBaseForm):
-    class Meta(GroupBaseForm.Meta):
-        model = Group
-        fields = [
-            'name',
-            'start',
-            'lessons_count',
-            'lessons_passed',
-            'description',
-        ]
+    pass
 
 
 class GroupsFilter(django_filters.FilterSet):

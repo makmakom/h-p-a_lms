@@ -21,14 +21,14 @@ def get_groups(request):
 
 
 def create_group(request):
-    if request.method == 'GET':
-        form = GroupCreateForm()
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = GroupCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect(reverse('groups:list'))
+    else:
+        form = GroupCreateForm()
 
     return render(
         request=request,
@@ -41,7 +41,7 @@ def create_group(request):
 
 
 def update_group(request, pk):
-    group = Group.objects.get(id=pk)
+    group = Group.objects.select_related('headman').get(id=pk)
 
     if request.method == 'GET':
         form = GroupUpdateForm(instance=group)
@@ -60,8 +60,8 @@ def update_group(request, pk):
         template_name='groups/update.html',
         context={
             'form': form,
-            'teachers': group.teachers.all(),
-            'students': group.students.all(),
+            'teachers': group.teachers.select_related('group').all(),
+            'students': group.students.select_related('group', 'headed_group').all(),
             'title': 'Update group',
         }
     )
