@@ -1,7 +1,10 @@
 import datetime
 
 from dateutil.relativedelta import relativedelta
+
 from django.db import models
+
+from faker import Faker
 
 
 class Person(models.Model):
@@ -10,7 +13,7 @@ class Person(models.Model):
 
     last_name = models.CharField(max_length=80)
     first_name = models.CharField(max_length=50)
-    age = models.IntegerField(default=42)
+    age = models.IntegerField(default=42, blank=True)
     email = models.EmailField(max_length=120, null=True)
     birthdate = models.DateField(default=datetime.date.today)
 

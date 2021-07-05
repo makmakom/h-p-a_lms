@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         count = options['count']
         try:
-            Teacher.generate_teachers(count)
+            Teacher.generate(count)
         except Exception:
             raise CommandError('Cannot create teachers')
         self.stdout.write(self.style.SUCCESS(f'{count} teachers were successfully created'))
