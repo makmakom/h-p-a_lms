@@ -25,8 +25,7 @@
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
-        <th>Phone</th>
-        <th>Birthday</th>
+        <th>Age</th>
         <th>Group</th>
         <th>X</th>
     </tr>
@@ -39,8 +38,7 @@
         <td>{{ item.first_name }}</td>
         <td>{{ item.last_name }}</td>
         <td>{{ item.email }}</td>
-        <td>{{ item.phone_number }}</td>
-        <td>{{ item.birthday }}</td>
+        <td>{{ item.age }}</td>
         <td>{% if item.group %}{{ item.group }}{% endif %}</td>
         <td><a href="{% url 'students:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>

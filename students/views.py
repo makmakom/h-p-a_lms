@@ -16,7 +16,7 @@ from webargs.djangoparser import use_args
     "last_name": fields.Str(
         required=False,
     ),
-    "birthday": fields.Str(
+    "birthdate": fields.Str(
         required=False,
     )
 },
