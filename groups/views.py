@@ -81,6 +81,7 @@ def update_group(request, pk):
         context={
             'form': form,
             'teachers': group.teachers.all(),
+            'students': group.students.all(),
             'title': 'Update group',
         }
     )
