@@ -5,25 +5,9 @@ from django.urls import reverse
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeachersFilter
 from teachers.models import Teacher
 
-from webargs import fields
-from webargs.djangoparser import use_args
 
-
-@use_args({
-    "first_name": fields.Str(
-        required=False,
-    ),
-    "last_name": fields.Str(
-        required=False,
-    ),
-},
-    location="query"
-)
-def get_teachers(request, args):
+def get_teachers(request):
     teachers = Teacher.objects.all()
-    for param_name, param_value in args.items():
-        teachers = teachers.filter(**{param_name: param_value})
-
     obj_filter = TeachersFilter(data=request.GET, queryset=teachers)
 
     return render(
