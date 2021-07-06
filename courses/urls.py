@@ -1,6 +1,6 @@
-from django.urls import path
-
 from courses.views import create_course, delete_course, get_courses, update_course
+
+from django.urls import path
 
 app_name = 'courses'
 
