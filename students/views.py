@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
 
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
@@ -40,31 +41,6 @@ def create_student(request):
     )
 
 
-def update_student(request, pk):
-    student = Student.objects.get(id=pk)
-
-    if request.method == 'GET':
-        form = StudentUpdateForm(instance=student)
-    elif request.method == 'POST':
-        form = StudentUpdateForm(
-            data=request.POST,
-            instance=student
-        )
-        if form.is_valid():
-            form.save()
-
-            return HttpResponseRedirect(reverse('students:list'))
-
-    return render(
-        request=request,
-        template_name='students/update.html',
-        context={
-            'form': form,
-            'title': 'Update student',
-        }
-    )
-
-
 def delete_student(request, pk):
     student = get_object_or_404(Student, id=pk)
 
@@ -80,3 +56,13 @@ def delete_student(request, pk):
             'title': 'Delete student',
         }
     )
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    form_class = StudentUpdateForm
+    success_url = reverse_lazy('students:list')
+    template_name = 'students/update.html'
+    extra_context = {
+        'title': 'Update student'
+    }

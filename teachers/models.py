@@ -4,8 +4,6 @@ from core.models import Person
 
 from django.db import models
 
-from groups.models import Group
-
 
 class Teacher(Person):
     salary = models.PositiveIntegerField(default=1500, null=True, blank=True)
