@@ -1,3 +1,5 @@
+from courses.models import Course
+
 from django.db import models
 
 from faker import Faker
@@ -14,10 +16,18 @@ class Group(models.Model):
         'students.Student',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='headed_group'
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    course = models.OneToOneField(
+        Course,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='group'
+    )
 
     def __str__(self):
         return f'{self.name}'

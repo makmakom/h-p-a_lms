@@ -62,6 +62,7 @@ def update_group(request, pk):
             'form': form,
             'teachers': group.teachers.select_related('group').all(),
             'students': group.students.select_related('group', 'headed_group').all(),
+            'course': group.course,
             'title': 'Update group',
         }
     )
