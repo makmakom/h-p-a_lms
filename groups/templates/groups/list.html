@@ -25,17 +25,21 @@
         <th>Name</th>
         <th>Start</th>
         <th>Description</th>
+        <th>Head man</th>
+        <th>Count students</th>
         <th>Course</th>
         <th>X</th>
     </tr>
     </thead>
     <tbody>
-    {% for item in obj_filter.qs %}
+    {% for item in object_list %}
     <tr>
         <td><a href="{% url 'groups:update' item.id %}">{{ item.id }}</a></td>
         <td>{{ item.name }}</td>
         <td>{{ item.start }}</td>
         <td>{{ item.description }}</td>
+        <td>{% if item.headman %}{{ item.headman.last_name }} {{ item.headman.first_name }}{% endif %}</td>
+        <td>{{ item.students.count }}</td>
         <td>{% if item.course %}{{ item.course }}{% endif %}</td>
         <td><a href="{% url 'groups:delete' item.id %}"><i class="bi bi-x-square danger"></i></a></td>
     </tr>
