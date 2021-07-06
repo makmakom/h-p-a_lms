@@ -48,8 +48,31 @@
                     </ul>
                 </li>
             </ul>
+
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown5">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Sign Out</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="">Profile {{ user.username }}</a></li>
+                        {% else %}
+                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Sign In</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'accounts:registration' %}">Sign Up</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            </ul>
             <form class="d-flex">
-<!--                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
                 <a class="btn btn-outline-success" data-bs-toggle="collapse" href="#collapseExample" role="button"
                    aria-expanded="false" aria-controls="collapseExample">
                     Search
