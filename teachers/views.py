@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
 
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeachersFilter
 from teachers.models import Teacher
@@ -40,31 +41,6 @@ def create_teacher(request):
     )
 
 
-def update_teacher(request, pk):
-    teacher = Teacher.objects.get(id=pk)
-
-    if request.method == 'GET':
-        form = TeacherUpdateForm(instance=teacher)
-    elif request.method == 'POST':
-        form = TeacherUpdateForm(
-            data=request.POST,
-            instance=teacher
-        )
-        if form.is_valid():
-            form.save()
-
-            return HttpResponseRedirect(reverse('teachers:list'))
-
-    return render(
-        request=request,
-        template_name='teachers/update.html',
-        context={
-            'form': form,
-            'title': 'Update teacher',
-        }
-    )
-
-
 def delete_teacher(request, pk):
     teacher = get_object_or_404(Teacher, id=pk)
 
@@ -80,3 +56,13 @@ def delete_teacher(request, pk):
             'title': 'Delete teacher',
         }
     )
+
+
+class TeacherUpdateView(UpdateView):
+    model = Teacher
+    form_class = TeacherUpdateForm
+    success_url = reverse_lazy('teachers:list')
+    template_name = 'teachers/update.html'
+    extra_context = {
+        'title': 'Update teacher',
+    }
