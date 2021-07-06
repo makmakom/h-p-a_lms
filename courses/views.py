@@ -1,9 +1,9 @@
+from courses.forms import CourseCreateForm, CourseFilter, CourseUpdateForm
+from courses.models import Course
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
-
-from courses.forms import CourseCreateForm, CourseUpdateForm, CourseFilter
-from courses.models import Course
 
 
 def get_courses(request):
