@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import UpdateView, CreateView, ListView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from teachers.forms import TeacherCreateForm, TeacherUpdateForm, TeachersFilter
 from teachers.models import Teacher
@@ -50,4 +50,13 @@ class TeacherUpdateView(UpdateView):
     template_name = 'teachers/update.html'
     extra_context = {
         'title': 'Update teacher',
+    }
+
+
+class TeacherDeleteView(DeleteView):
+    model = Teacher
+    success_url = reverse_lazy('teachers:list')
+    template_name = 'teachers/delete.html'
+    extra_context = {
+        'title': 'Delete teacher',
     }
