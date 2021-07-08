@@ -18,6 +18,16 @@
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown3" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Teachers
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                        <li><a class="dropdown-item" href="{% url 'teachers:list' %}">List</a></li>
+                        <li><a class="dropdown-item" href="{% url 'teachers:create' %}">Create new</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown2" role="button" data-bs-toggle="dropdown"
                        aria-expanded="false">
                         Groups
@@ -25,6 +35,16 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
                         <li><a class="dropdown-item" href="{% url 'groups:list' %}">List</a></li>
                         <li><a class="dropdown-item" href="{% url 'groups:create' %}">Create new</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown4" role="button" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        Courses
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown4">
+                        <li><a class="dropdown-item" href="{% url 'courses:list' %}">List</a></li>
+                        <li><a class="dropdown-item" href="{% url 'courses:create' %}">Create new</a></li>
                     </ul>
                 </li>
             </ul>

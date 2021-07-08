@@ -5,29 +5,9 @@ from django.urls import reverse
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
 
-from webargs import fields
-from webargs.djangoparser import use_args
 
-
-@use_args({
-    "name": fields.Str(
-        required=False,
-    ),
-    "lessons_count": fields.Int(
-        required=False,
-    ),
-    "lessons_passed": fields.Int(
-        required=False,
-    )
-},
-    location="query"
-)
-def get_groups(request, args):
+def get_groups(request):
     groups = Group.objects.all()
-    for param_name, param_value in args.items():
-        if param_value:
-            groups = groups.filter(**{param_name: param_value})
-
     obj_filter = GroupsFilter(data=request.GET, queryset=groups)
 
     return render(
@@ -41,14 +21,14 @@ def get_groups(request, args):
 
 
 def create_group(request):
-    if request.method == 'GET':
-        form = GroupCreateForm()
-    elif request.method == 'POST':
+    if request.method == 'POST':
         form = GroupCreateForm(request.POST)
         if form.is_valid():
             form.save()
 
             return HttpResponseRedirect(reverse('groups:list'))
+    else:
+        form = GroupCreateForm()
 
     return render(
         request=request,
@@ -61,7 +41,7 @@ def create_group(request):
 
 
 def update_group(request, pk):
-    group = Group.objects.get(id=pk)
+    group = Group.objects.select_related('headman').get(id=pk)
 
     if request.method == 'GET':
         form = GroupUpdateForm(instance=group)
@@ -80,7 +60,9 @@ def update_group(request, pk):
         template_name='groups/update.html',
         context={
             'form': form,
-            'teachers': group.teachers.all(),
+            'teachers': group.teachers.select_related('group').all(),
+            'students': group.students.select_related('group', 'headed_group').all(),
+            'course': group.course,
             'title': 'Update group',
         }
     )

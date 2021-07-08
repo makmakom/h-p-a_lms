@@ -1,5 +1,3 @@
-import re
-
 from django.core.exceptions import ValidationError
 from django.forms import DateInput, ModelForm
 
@@ -11,24 +9,15 @@ from students.models import Student
 class StudentBaseForm(ModelForm):
     class Meta:
         model = Student
-        fields = [
-            'first_name',
-            'last_name',
-            'phone_number',
-            'birthday',
-            'enroll_date',
-            'graduate_date',
+        fields = '__all__'
+        exclude = [
+            'created_at',
+            'updated_at',
         ]
-        # fields = '__all__'
         widgets = {
-            'birthday': DateInput(attrs={'type': 'date'}),
+            'birthdate': DateInput(attrs={'type': 'date'}),
             'enroll_date': DateInput(attrs={'type': 'date'}),
             'graduate_date': DateInput(attrs={'type': 'date'}),
-            'phone_number': DateInput(attrs={
-                'type': 'phone',
-                'placeholder': '+38 000 132-4567',
-                'pattern': r'\+[0-9]{2}[0-9]{3}[0-9]{3}[0-9]{4}',
-            })
         }
 
     @staticmethod
@@ -43,10 +32,6 @@ class StudentBaseForm(ModelForm):
         last_name = self.cleaned_data['last_name']
         return self.normalize_name(last_name)
 
-    def clean_phone_number(self):
-        phone = self.cleaned_data['phone_number']
-        return '+' + re.sub(r'[^\d]', '', phone)
-
     def clean(self):
         enroll_date = self.cleaned_data['enroll_date']
         graduate_date = self.cleaned_data['graduate_date']
@@ -59,18 +44,7 @@ class StudentCreateForm(StudentBaseForm):
 
 
 class StudentUpdateForm(StudentBaseForm):
-    class Meta(StudentBaseForm.Meta):
-        model = Student
-        # fields = [
-        #     'first_name',
-        #     'last_name',
-        #     'email',
-        #     'phone_number',
-        #     'birthday',
-        #     'enroll_date',
-        #     'graduate_date',
-        # ]
-        fields = '__all__'
+    pass
 
 
 class StudentsFilter(django_filters.FilterSet):

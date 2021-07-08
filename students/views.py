@@ -5,24 +5,8 @@ from django.urls import reverse
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
 
-from webargs import fields
-from webargs.djangoparser import use_args
 
-
-@use_args({
-    "first_name": fields.Str(
-        required=False,
-    ),
-    "last_name": fields.Str(
-        required=False,
-    ),
-    "birthday": fields.Str(
-        required=False,
-    )
-},
-    location="query"
-)
-def get_students(request, args):
+def get_students(request):
     students = Student.objects.all().select_related('group')
     obj_filter = StudentsFilter(data=request.GET, queryset=students)
 

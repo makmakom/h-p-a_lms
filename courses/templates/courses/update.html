@@ -15,7 +15,9 @@
     {% csrf_token %}
     {{ form | crispy }}
     <div class="mt-3">
-        <input class="btn btn-success" type="submit" value="Create">
+        <input class="btn btn-success" type="submit" value="Update">
+        <a class="btn btn-danger" href="{% url 'courses:list' %}">Cancel</a>
     </div>
 </form>
+
 {% endblock %}
