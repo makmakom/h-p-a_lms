@@ -28,6 +28,10 @@ class Group(models.Model):
         blank=True,
         related_name='group'
     )
+    teachers = models.ManyToManyField(
+        to='teachers.Teacher',
+        related_name='groups'
+    )
 
     def __str__(self):
         return f'{self.name}'

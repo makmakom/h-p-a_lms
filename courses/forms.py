@@ -1,8 +1,8 @@
+from courses.models import Course
+
 from django.forms import ModelForm
 
 import django_filters
-
-from courses.models import Course
 
 
 class CourseBaseForm(ModelForm):

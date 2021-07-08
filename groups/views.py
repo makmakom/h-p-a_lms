@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
+from django.views.generic import UpdateView
 
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
@@ -40,34 +41,6 @@ def create_group(request):
     )
 
 
-def update_group(request, pk):
-    group = Group.objects.select_related('headman').get(id=pk)
-
-    if request.method == 'GET':
-        form = GroupUpdateForm(instance=group)
-    elif request.method == 'POST':
-        form = GroupUpdateForm(
-            data=request.POST,
-            instance=group
-        )
-        if form.is_valid():
-            form.save()
-
-            return HttpResponseRedirect(reverse('groups:list'))
-
-    return render(
-        request=request,
-        template_name='groups/update.html',
-        context={
-            'form': form,
-            'teachers': group.teachers.select_related('group').all(),
-            'students': group.students.select_related('group', 'headed_group').all(),
-            'course': group.course,
-            'title': 'Update group',
-        }
-    )
-
-
 def delete_group(request, pk):
     group = get_object_or_404(Group, id=pk)
 
@@ -83,3 +56,21 @@ def delete_group(request, pk):
             'title': 'Delete group',
         }
     )
+
+
+class GroupUpdateView(UpdateView):
+    model = Group
+    form_class = GroupUpdateForm
+    success_url = reverse_lazy('groups:list')
+    template_name = 'groups/update.html'
+    extra_context = {
+        'title': 'Update group',
+    }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['teachers'] = self.get_object().teachers.all()
+        context['students'] = self.get_object().students.select_related('group', 'headed_group').all()
+        context['course'] = self.get_object().course
+
+        return context
