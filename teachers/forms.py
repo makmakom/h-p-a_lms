@@ -1,5 +1,3 @@
-import re
-
 from django.forms import DateInput, ModelForm
 
 import django_filters
@@ -10,20 +8,13 @@ from teachers.models import Teacher
 class TeacherBaseForm(ModelForm):
     class Meta:
         model = Teacher
-        fields = [
-            'first_name',
-            'last_name',
-            'phone_number',
-            'age',
-            'subject',
-            'experience',
+        fields = '__all__'
+        exclude = [
+            'created_at',
+            'updated_at',
         ]
         widgets = {
-            'phone_number': DateInput(attrs={
-                'type': 'phone',
-                'placeholder': '+38 000 132-4567',
-                'pattern': r'\+[0-9]{2} [0-9]{3} [0-9]{3}-[0-9]{4}',
-            })
+            'birthdate': DateInput(attrs={'type': 'date'}),
         }
 
     @staticmethod
@@ -38,34 +29,20 @@ class TeacherBaseForm(ModelForm):
         last_name = self.cleaned_data['last_name']
         return self.normalize_name(last_name)
 
-    def clean_phone_number(self):
-        phone = self.cleaned_data['phone_number']
-        return '+' + re.sub(r'[^\d]', '', phone)
-
 
 class TeacherCreateForm(TeacherBaseForm):
     pass
 
 
 class TeacherUpdateForm(TeacherBaseForm):
-    class Meta(TeacherBaseForm.Meta):
-        model = Teacher
-        fields = [
-            'first_name',
-            'last_name',
-            'phone_number',
-            'age',
-            'subject',
-            'experience',
-            'group',
-        ]
+    pass
 
 
 class TeachersFilter(django_filters.FilterSet):
     class Meta:
         model = Teacher
         fields = {
-            'age': ['lt', 'gt'],
+            'salary': ['lt', 'gt'],
             'first_name': ['exact', 'icontains'],
             'last_name': ['exact', 'startswith'],
         }

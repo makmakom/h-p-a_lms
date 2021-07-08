@@ -1,8 +1,8 @@
+from courses.models import Course
+
 from django.db import models
 
 from faker import Faker
-
-# from students.models import Student
 
 
 class Group(models.Model):
@@ -11,12 +11,22 @@ class Group(models.Model):
     start = models.DateField()
     lessons_count = models.IntegerField(default=12, null=False)
     lessons_passed = models.IntegerField(default=0, null=False)
+    # todo: Duplicated query fix needed
     headman = models.OneToOneField(
-        # Student,
         'students.Student',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name='headed_group'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    course = models.OneToOneField(
+        Course,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='group'
     )
 
     def __str__(self):
