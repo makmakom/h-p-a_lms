@@ -12,13 +12,13 @@
 
 {% block content %}
 <form action="" method="get">
-    {{ obj_filter.form | crispy }}
+    {{ object_list.form | crispy }}
     <input class="btn btn-success mb-3 mt-3" type="submit" value="Search">
 </form>
 
-<p><strong>Count of teachers: {{ obj_filter.qs.count }}</strong></p>
+<p><strong>Count of teachers: {{ object_list.qs.count }}</strong></p>
 
-{% with list_objects=obj_filter.qs %}
+{% with list_objects=object_list.qs %}
     {% include 'includes/teacher-list-table.html' %}
 {% endwith %}
 
