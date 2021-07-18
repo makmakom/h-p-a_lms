@@ -20,7 +20,7 @@
 <p><strong>Count of students: {{ object_list.qs.count }}</strong></p>
 
 {% with list_objects=object_list.qs %}
-{% include 'includes/student-list-table.html' %}
+    {% include 'includes/student-list-table.html' %}
 {% endwith %}
 
 {% endblock %}
