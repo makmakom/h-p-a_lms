@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -16,6 +17,12 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
     extra_context = {
         'title': 'Create group'
     }
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'Group {form.cleaned_data["name"]} was successfully created.')
+
+        return result
 
 
 class GroupListView(LoginRequiredMixin, ListView):
@@ -73,3 +80,9 @@ class GroupDeleteView(LoginRequiredMixin, DeleteView):
     extra_context = {
         'title': 'Delete group'
     }
+
+    def delete(self, *args, **kwargs):
+        result = super(DeleteView, self).delete(*args, **kwargs)
+        messages.info(self.request, 'Group was successfully deleted.')
+
+        return result
