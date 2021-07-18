@@ -27,8 +27,6 @@ class AccountLoginForm(LoginView):
     def form_valid(self, form):
         result = super().form_valid(form)
         messages.success(self.request, f'User {self.request.user} has successfully logged in.')
-        messages.info(self.request, f'User {self.request.user} has successfully logged in.')
-        messages.warning(self.request, f'User {self.request.user} has successfully logged in.')
 
         return result
 
