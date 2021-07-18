@@ -1,9 +1,9 @@
+from accounts.forms import AccountRegistrationForm
+
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
-
-from accounts.forms import AccountRegistrationForm
 
 
 class AccountRegistrationView(CreateView):
