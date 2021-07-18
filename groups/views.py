@@ -1,25 +1,9 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.views.generic import UpdateView, ListView, CreateView, DeleteView
 
 from groups.forms import GroupCreateForm, GroupUpdateForm, GroupsFilter
 from groups.models import Group
 from students.models import Student
-
-
-# def get_groups(request):
-#     groups = Group.objects.all()
-#     obj_filter = GroupsFilter(data=request.GET, queryset=groups)
-#
-#     return render(
-#         request=request,
-#         template_name='groups/list.html',
-#         context={
-#             'obj_filter': obj_filter,
-#             'title': 'Groups List'
-#         }
-#     )
 
 
 class GroupCreateView(CreateView):
@@ -38,6 +22,12 @@ class GroupListView(ListView):
     extra_context = {
         'title': 'Groups List'
     }
+
+    def get_queryset(self):
+        return GroupsFilter(
+            data=self.request.GET,
+            queryset=self.model.objects.all()
+        )
 
 
 class GroupUpdateView(UpdateView):
