@@ -1,9 +1,8 @@
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
-
 from courses.forms import CourseCreateForm, CourseFilter, CourseUpdateForm
 from courses.models import Course
 
 from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 
 class CourseCreateView(CreateView):

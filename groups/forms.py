@@ -1,4 +1,4 @@
-from django.forms import DateInput, ModelForm, ChoiceField
+from django.forms import ChoiceField, DateInput, ModelForm
 
 import django_filters
 

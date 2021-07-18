@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, ListView, CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
 from students.models import Student
