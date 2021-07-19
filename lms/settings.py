@@ -59,6 +59,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'core.middlewares.SimpleMiddleware',
 ]
 
 ROOT_URLCONF = 'lms.urls'
@@ -145,3 +147,4 @@ if DEBUG:
     INTERNAL_IPS = [
         '127.0.0.1',
     ]
+    EMAIL_PORT = 1025
