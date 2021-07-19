@@ -11,12 +11,14 @@
 {% endblock %}
 
 {% block content %}
-<form action="" method="get">
-    {{ obj_filter.form | crispy }}
-    <input class="btn btn-success mb-3 mt-3" type="submit" value="Search">
-</form>
+<div class="collapse" id="collapseExample">
+    <form action="" method="get">
+        {{ object_list.form | crispy }}
+        <input class="btn btn-success mb-3 mt-3" type="submit" value="Search">
+    </form>
+</div>
 
-<p><strong>Count of groups: {{ obj_filter.qs.count }}</strong></p>
+<p><strong>Count of groups: {{ object_list.qs.count }}</strong></p>
 
 <table class="table table-sm table-hover">
     <thead>
@@ -32,7 +34,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for item in object_list %}
+    {% for item in object_list.qs %}
     <tr>
         <td><a href="{% url 'groups:update' item.id %}">{{ item.id }}</a></td>
         <td>{{ item.name }}</td>

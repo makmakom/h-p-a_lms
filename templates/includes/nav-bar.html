@@ -49,7 +49,7 @@
                 </li>
             </ul>
 
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex">
+            <ul class="navbar-nav d-flex">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,17 +57,12 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown5">
                         {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Sign Out</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="">Profile {{ user.username }}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Sign Out</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile_update' %}">Profile {{ user.username }}</a></li>
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}">Change password</a></li>
                         {% else %}
-                        <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Sign In</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="{% url 'accounts:registration' %}">Sign Up</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:login' %}">Sign In</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:registration' %}">Sign Up</a></li>
                         {% endif %}
                     </ul>
                 </li>
