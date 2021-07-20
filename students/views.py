@@ -1,8 +1,9 @@
+from copy import copy
+
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from django.core.paginator import Paginator
 
 
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
@@ -45,6 +46,13 @@ class StudentListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['object_filter'] = self.get_filter()
+
+        params = self.request.GET
+        if 'page' in params:
+            params = copy(params)
+            del params['page']
+
+        context['get_params'] = params.urlencode()
 
         return context
 
