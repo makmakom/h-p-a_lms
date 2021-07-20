@@ -13,14 +13,17 @@
 {% block content %}
 <div class="collapse" id="collapseExample">
     <form action="" method="get">
-        {{ object_list.form | crispy }}
+        {{ object_filter.form | crispy }}
         <input class="btn btn-success mb-3 mt-3" type="submit" value="Search">
     </form>
 </div>
-<p><strong>Count of students: {{ object_list.qs.count }}</strong></p>
 
-{% with list_objects=object_list.qs %}
+{% with list_objects=object_list %}
     {% include 'includes/student-list-table.html' %}
 {% endwith %}
+
+{#{% if is_paginated %}#}
+    {% include 'includes/pagination.html' %}
+{#{% endif %}#}
 
 {% endblock %}

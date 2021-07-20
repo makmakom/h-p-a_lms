@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 from students.forms import StudentCreateForm, StudentUpdateForm, StudentsFilter
@@ -25,6 +26,7 @@ class StudentCreateView(LoginRequiredMixin, CreateView):
 
 
 class StudentListView(LoginRequiredMixin, ListView):
+    paginate_by = 15
     model = Student
     template_name = 'students/list.html'
     extra_context = {
