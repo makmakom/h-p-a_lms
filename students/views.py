@@ -31,11 +31,20 @@ class StudentListView(LoginRequiredMixin, ListView):
         'title': 'Student list'
     }
 
-    def get_queryset(self):
+    def get_filter(self):
         return StudentsFilter(
             data=self.request.GET,
-            queryset=self.model.objects.all()
+            queryset=self.model.objects.select_related('group', 'headed_group').all()
         )
+
+    def get_queryset(self):
+        return self.get_filter().qs
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_filter'] = self.get_filter()
+
+        return context
 
 
 class StudentUpdateView(LoginRequiredMixin, UpdateView):
