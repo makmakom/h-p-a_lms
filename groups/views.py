@@ -1,3 +1,5 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -7,7 +9,7 @@ from groups.models import Group
 from students.models import Student
 
 
-class GroupCreateView(CreateView):
+class GroupCreateView(LoginRequiredMixin, CreateView):
     model = Group
     form_class = GroupCreateForm
     success_url = reverse_lazy('groups:list')
@@ -16,8 +18,14 @@ class GroupCreateView(CreateView):
         'title': 'Create group'
     }
 
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        messages.success(self.request, f'Group {form.cleaned_data["name"]} was successfully created.')
 
-class GroupListView(ListView):
+        return result
+
+
+class GroupListView(LoginRequiredMixin, ListView):
     model = Group
     template_name = 'groups/list.html'
     extra_context = {
@@ -31,7 +39,7 @@ class GroupListView(ListView):
         )
 
 
-class GroupUpdateView(UpdateView):
+class GroupUpdateView(LoginRequiredMixin, UpdateView):
     model = Group
     form_class = GroupUpdateForm
     success_url = reverse_lazy('groups:list')
@@ -65,10 +73,16 @@ class GroupUpdateView(UpdateView):
         return response
 
 
-class GroupDeleteView(DeleteView):
+class GroupDeleteView(LoginRequiredMixin, DeleteView):
     model = Group
     success_url = reverse_lazy('groups:list')
     template_name = 'groups/delete.html'
     extra_context = {
         'title': 'Delete group'
     }
+
+    def delete(self, *args, **kwargs):
+        result = super(DeleteView, self).delete(*args, **kwargs)
+        messages.info(self.request, 'Group was successfully deleted.')
+
+        return result
