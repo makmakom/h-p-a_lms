@@ -10,32 +10,31 @@ class StudentsInlineTable(admin.TabularInline):
         'last_name',
         'first_name',
         'email',
+        'birthdate',
         'age',
     ]
-
-    # readonly_fields = fields
-    # show_change_link = True             # edit in Student model
-
-    extra = 0               # default = 3
+    readonly_fields = ['age']
+    show_change_link = True
+    extra = 0
 
 
 class GroupAdmin(admin.ModelAdmin):
     list_display = [
         'name',
-        # 'start_date',
-        # 'end_date',
+        'start',
         'headman',
-        # 'days_of_week',
     ]
-
     fields = [
         'name',
-        # ('start_date', 'end_date', 'days_of_week'),
+        'course',
         'headman',
         'teachers',
     ]
-
     inlines = [StudentsInlineTable]
+    search_fields = [
+        'name',
+        'start',
+    ]
 
 
 admin.site.register(Group, GroupAdmin)
