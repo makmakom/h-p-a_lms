@@ -1,3 +1,5 @@
+from copy import copy
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
@@ -26,17 +28,34 @@ class GroupCreateView(LoginRequiredMixin, CreateView):
 
 
 class GroupListView(LoginRequiredMixin, ListView):
+    paginate_by = 15
     model = Group
     template_name = 'groups/list.html'
     extra_context = {
         'title': 'Groups List'
     }
 
-    def get_queryset(self):
+    def get_filter(self):
         return GroupsFilter(
             data=self.request.GET,
-            queryset=self.model.objects.all()
+            queryset=self.model.objects.select_related('headman', 'course').prefetch_related('students').all()
         )
+
+    def get_queryset(self):
+        return self.get_filter().qs
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object_filter'] = self.get_filter()
+
+        params = self.request.GET
+        if 'page' in params:
+            params = copy(params)
+            del params['page']
+
+        context['get_params'] = params.urlencode()
+
+        return context
 
 
 class GroupUpdateView(LoginRequiredMixin, UpdateView):
