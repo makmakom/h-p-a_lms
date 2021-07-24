@@ -1,7 +1,7 @@
 <table class="table table-sm table-hover">
     <thead>
     <tr>
-        <th>ID | <i class="bi bi-pencil-square"></i></th>
+        <th><i class="bi bi-pencil-square"></i></th>
         <th>First name</th>
         <th>Last name</th>
         <th>Email</th>
@@ -14,7 +14,11 @@
     <tbody>
     {% for item in list_objects %}
     <tr>
+        {% if is_paginated %}
+        <td><a href="{% url 'students:update' item.id %}">{{ forloop.counter0|add:page_obj.start_index }}</a></td>
+        {% else %}
         <td><a href="{% url 'students:update' item.id %}">{{ item.id }}</a></td>
+        {% endif %}
         <td>{{ item.first_name }}</td>
         <td>{{ item.last_name }}</td>
         <td>{{ item.email }}</td>
