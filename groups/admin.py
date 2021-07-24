@@ -1,7 +1,8 @@
 from django.contrib import admin
 
-from .models import Group
 from students.models import Student
+
+from .models import Group
 
 
 class StudentsInlineTable(admin.TabularInline):
