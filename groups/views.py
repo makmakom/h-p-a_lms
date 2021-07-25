@@ -48,13 +48,6 @@ class GroupListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context['object_filter'] = self.get_filter()
 
-        params = self.request.GET
-        if 'page' in params:
-            params = copy(params)
-            del params['page']
-
-        context['get_params'] = params.urlencode()
-
         return context
 
 

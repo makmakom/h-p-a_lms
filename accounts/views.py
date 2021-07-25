@@ -11,8 +11,6 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 
-from accounts.models import Profile
-
 
 class AccountRegistrationView(CreateView):
     model = User
