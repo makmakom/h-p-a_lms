@@ -71,7 +71,7 @@ class AccountUpdateView(LoginRequiredMixin, ProcessFormView):
             user_form.save()
             profile_form.save()
 
-            return HttpResponseRedirect(reverse('account:profile_update'))
+            return HttpResponseRedirect(reverse('accounts:profile_update'))
 
         return render(
             request,
