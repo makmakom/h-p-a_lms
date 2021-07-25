@@ -1,10 +1,17 @@
-from accounts.forms import AccountRegistrationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.views.generic.edit import ProcessFormView
+
+from accounts.forms import AccountRegistrationForm, AccountUpdateForm, AccountUpdateProfileForm
 
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
+
+from accounts.models import Profile
 
 
 class AccountRegistrationView(CreateView):
@@ -33,3 +40,41 @@ class AccountLoginForm(LoginView):
 
 class AccountLogoutView(LogoutView):
     template_name = 'accounts/logout.html'
+
+
+class AccountUpdateView(LoginRequiredMixin, ProcessFormView):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        profile = request.user.profile
+
+        user_form = AccountUpdateForm(instance=user)
+        profile_form = AccountUpdateProfileForm(instance=profile)
+
+        return render(
+            request,
+            'accounts/profile_update.html',
+            {'user_form': user_form, 'profile_form': profile_form}
+        )
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        profile = request.user.profile
+
+        user_form = AccountUpdateForm(instance=user, data=request.POST)
+        profile_form = AccountUpdateProfileForm(
+            instance=profile,
+            data=request.POST,
+            files=request.FILES
+        )
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+
+            return HttpResponseRedirect(reverse('account:profile_update'))
+
+        return render(
+            request,
+            'accounts/profile_update.html',
+            {'user_form': user_form, 'profile_form': profile_form}
+        )
