@@ -53,7 +53,11 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown5" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="rounded-circle" src="{{ user.profile.avatar.url }}" width="40px" height="40px">
+                        {% if user.is_authenticated %}
+                            <img class="rounded-circle" src="{{ user.profile.avatar.url }}" width="40px" height="40px">
+                        {% else %}
+                            Account
+                        {% endif %}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown5">
                         {% if user.is_authenticated %}
