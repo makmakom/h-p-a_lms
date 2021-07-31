@@ -29,6 +29,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+SITE_ID = 1
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,10 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.flatpages',
 
     'django_extensions',
     'crispy_forms',
     'django_filters',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'core',
     'students',
@@ -59,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 
     'core.middlewares.SimpleMiddleware',
 ]
@@ -129,11 +136,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 
-STATIC_ROOT = BASE_DIR / 'static'
-CKEDITOR_BASEPATH = "/my_static/ckeditor/ckeditor/"
+CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
