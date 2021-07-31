@@ -11,7 +11,7 @@ Profile update.
 {% endblock %}
 
 {% block content %}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="media">
         <div class="img-circle.vert">
